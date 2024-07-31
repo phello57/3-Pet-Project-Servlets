@@ -1,0 +1,101 @@
+
+
+
+
+GET http://localhost:8080/foreach_war_exploded/currencies
+Accept: application/json
+
+### KHR  EUR  MUR  ZWL  CHW  JPY  KZT  CLP  RUB
+GET http://localhost:8080/foreach_war_exploded/currency?currency=JPY
+Accept: application/json
+
+###
+GET http://localhost:8080/foreach_war_exploded/currency?currency=RUB
+Accept: application/json
+
+###
+GET http://localhost:8080/foreach_war_exploded/currency?currency=ZWL
+Accept: application/json
+
+### Добавление новой валюты в базу
+POST http://localhost:8080/foreach_war_exploded/currency?code=GLD&name=24-carat gold&sign=Au
+Accept: application/json
+
+###
+GET http://5.35.101.217:8080/mysite/currencies
+Content-Type: application/json
+
+
+
+###
+GET http://localhost:8080/foreach_war_exploded/rate?base=RUB&target=SEK
+Accept: application/json
+
+###
+GET http://localhost:8080/foreach_war_exploded/rates
+Accept: application/json
+
+### Добавление курса в базу
+POST http://localhost:8080/foreach_war_exploded/rate?base=USD&target=EUR&rate=0.95
+Accept: application/json
+
+###
+GET http://localhost:8080/foreach_war_exploded/rate?base=USD&target=EUR
+Accept: application/json
+
+
+
+###
+GET http://localhost:8080/foreach_war_exploded/exchange?base=RUB&target=EUR&amount=1000
+Accept: application/json
+
+###
+GET http://localhost:8080/foreach_war_exploded/exchange?base=EUR&target=RUB&amount=1000
+Accept: application/json
+
+
+
+###
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

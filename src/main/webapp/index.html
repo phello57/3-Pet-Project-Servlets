@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+    <a href="http://5.35.101.217:8080/mysite/currencies">GET Все валюты</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/currency?currency=JPY">GET Валюта JPY</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/currency?currency=RUB">GET Валюта RUB</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/currency?currency=ZWL">GET Валюта ZWL</a>
+    <br><br>
+    <div>POST Добавить валюту: code=GLD name=24-carat-gold sign=Au</div>
+    <form id="myForm" action="/currency" method="post">
+        <input type="hidden" name="code" value="GLD">
+        <input type="hidden" name="name" value="24-carat-gold">
+        <input type="hidden" name="sign" value="Au">
+        <input id="s1" type="button" value="Отправить">
+    </form>
+    <br><br>
+
+    <a href="http://5.35.101.217:8080/mysite/currency?currency=GLD">GET Валюта GLD</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/rates">GET Вывести все курсы</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/rate?base=RUB&target=SEK"> GET Вывести курс, база RUB, таргет SEK</a>
+    <br><br>
+    <div>Добавить курс: /rate?base=USD target=EUR rate=0.95</div>
+    <form id="myForm2" action="/rate" method="post">
+        <input type="hidden" name="base" value="USD">
+        <input type="hidden" name="target" value="EUR">
+        <input type="hidden" name="rate" value="0.95">
+        <input id="s2" type="button" value="Отправить">
+    </form>
+    <br>
+
+    <a href="http://5.35.101.217:8080/mysite/rate?base=USD&target=EUR"> GET /rate?base=USD&target=EUR</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/exchange?base=RUB&target=EUR&amount=1000"> GET Курс обмена: /exchange?base=RUB&target=EUR&amount=1000</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/exchange?base=EUR&target=RUB&amount=1000"> GET Обратный курс обмена, которого нет в базе: /exchange?base=EUR&target=RUB&amount=1000</a>
+    <br><br><br><br>
+    <div>Ошибки</div>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/currency?currency=KKK">GET Валюта. Передача несуществующей валюты KKK</a>
+    <br><br>
+    <a href="http://5.35.101.217:8080/mysite/currency?currency=KKKG">GET Валюта. Передача невалидного значения валюты KKKG</a>
+    <br><br>
+</body>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const button = document.getElementById('s1');
+
+        const callback = () => {
+            let form = document.getElementById('myForm');
+            let url = '/mysite/currency';
+
+            fetch(url, {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(form)),
+                headers : new FormData(form)
+            }).then(response => {
+                console.log('Запрос успешно отправлен');
+            }).catch(error => {
+                console.error('Произошла ошибка:', error);
+            });
+        };
+
+        button.addEventListener('click', callback);
+    });
+    document.addEventListener("DOMContentLoaded", function() {
+        const button = document.getElementById('s2');
+
+        const callback = () => {
+            let form = document.getElementById('myForm2');
+            let url = '/mysite/rate' ;
+
+            fetch(url, {
+                method: 'POST',
+                body: new URLSearchParams(new FormData(form)),
+                headers : {
+                    'Content-Type': 'text/html',
+                    'base': 'USD',
+                    'target': 'EUR',
+                    'rate': '0.95'
+                }
+            }).then(response => {
+                console.log('Запрос успешно отправлен');
+            }).catch(error => {
+                console.error('Произошла ошибка:', error);
+            });
+        };
+
+        button.addEventListener('click', callback);
+    });
+</script>
+</html>
