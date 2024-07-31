@@ -2,6 +2,7 @@ package com.foreach.model.dao;
 
 import com.foreach.Settings;
 import com.foreach.model.dto.CurrencyDTO;
+import jdk.jfr.SettingControl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,8 +20,7 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
         PreparedStatement preparedStatement = null;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(Settings.SQL_PORT, Settings.USER, Settings.PASSWORD);
+            connection = Settings.getConnection();
 
             Statement statement = connection.createStatement();
 
@@ -32,8 +32,6 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
 
             preparedStatement.executeUpdate();
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -61,8 +59,7 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
         ArrayList<CurrencyDTO> retArrCurrency;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(Settings.SQL_PORT, Settings.USER, Settings.PASSWORD);
+            connection = Settings.getConnection();
 
             preparedStatement = connection.prepareStatement(selectAllCurrencies);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,8 +76,6 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
             }
 
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -112,8 +107,7 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
         CurrencyDTO retCurrency = new CurrencyDTO();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(Settings.SQL_PORT, Settings.USER, Settings.PASSWORD);
+            connection = Settings.getConnection();
 
             preparedStatement = connection.prepareStatement(selectCurrencyById);
             preparedStatement.setInt(1, id);
@@ -127,8 +121,6 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
                 retCurrency.full_name = resultSet.getString("full_name");
             }
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -159,8 +151,7 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
         CurrencyDTO retCurrency = new CurrencyDTO();
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(Settings.SQL_PORT, Settings.USER, Settings.PASSWORD);
+            connection = Settings.getConnection();
 
             preparedStatement = connection.prepareStatement(selectSQL);
 
@@ -171,9 +162,6 @@ public class CurrencyServiceMySQL implements CurrencyDAO{
             retCurrency.sign = resultSet.getString("sign");
             retCurrency.full_name = resultSet.getString("full_name");
 
-
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (SQLException e) {
 
         } finally {

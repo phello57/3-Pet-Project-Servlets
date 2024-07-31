@@ -62,8 +62,7 @@ public class RateServeiceMySQL implements RateDAO{
         ArrayList<RatesDTO> retArrRates;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(Settings.SQL_PORT, Settings.USER, Settings.PASSWORD);
+            connection = Settings.getConnection();
 
             preparedStatement = connection.prepareStatement(selectAllRates);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -78,10 +77,6 @@ public class RateServeiceMySQL implements RateDAO{
 
                 retArrRates.add(rate);
             }
-
-
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

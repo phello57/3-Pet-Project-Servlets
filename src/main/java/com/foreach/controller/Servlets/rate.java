@@ -76,8 +76,6 @@ public class rate extends HttpServlet {
                     retJson.put("targetCurrency", targetCurrencyJson);
                     retJson.put("baseCurrency", baseCurrencyJson);
 
-
-
                     if (!isBasedFound  || !isTargetFound) {
                         retJson.clear();
                         response.setStatus(Settings.HTTP_NO_DATA_FOUND);
@@ -133,7 +131,9 @@ public class rate extends HttpServlet {
                 resultJson.put(Validate.errorTextContinue);
             }
         }
-        response.getWriter().write(resultJson.toString());
+        PrintWriter out = response.getWriter();
+        out.write(resultJson.toString());
+        out.close();
     }
 }
 

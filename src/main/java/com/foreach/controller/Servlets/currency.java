@@ -25,11 +25,9 @@ public class currency extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-
         response.setContentType("application/json");
         JSONArray resultJson = new JSONArray();
-        response.setHeader("error", "dich ne rabotaet");
-        response.addHeader("error2", "kto gorel togo ne podojjesh");
+
         String currency = request.getParameter("currency");
 
         if (!Validate.checkStr(currency, 3)) {
@@ -54,7 +52,6 @@ public class currency extends HttpServlet {
                 currentObj.put("sign", currencyDTO.sign);
 
                 resultJson.put(currentObj);
-
             }
         }
 

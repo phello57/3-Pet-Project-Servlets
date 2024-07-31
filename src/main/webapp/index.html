@@ -86,12 +86,12 @@
             fetch(url, {
                 method: 'POST',
                 body: new URLSearchParams(new FormData(form)),
-                headers : {
-                    'Content-Type': 'text/html',
-                    'base': 'USD',
-                    'target': 'EUR',
-                    'rate': '0.95'
-                }
+                // headers : {
+                //     'Content-Type': 'text/html',
+                //     'base': 'USD',
+                //     'target': 'EUR',
+                //     'rate': '0.95'
+                //}
             }).then(response => {
                 console.log('Запрос успешно отправлен');
             }).catch(error => {

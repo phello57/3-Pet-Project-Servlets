@@ -14,7 +14,6 @@ public class Settings {
     public static final int HTTP_NO_DATA_FOUND = 404;
 
     public static final int HTTP_SERVER_ERROR = 500;
-    public static final int HTTP_BD_NOT_ACCESS = 503;
 
     public static Connection getConnection() {
         try {

@@ -6,6 +6,7 @@ import com.foreach.model.dao.CurrencyServiceMySQL;
 import com.foreach.model.dao.RateServeiceMySQL;
 import com.foreach.model.dto.CurrencyDTO;
 import com.foreach.model.dto.RatesDTO;
+import com.foreach.service.Convert;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,65 +39,47 @@ public class exchange extends HttpServlet {
 
         int amount = Integer.parseInt(request.getParameter("amount"));
 
-            Connection connection = Settings.getConnection();
+        Connection connection = Settings.getConnection();
 
-            CurrencyDTO resultBase = currencyServiceMySQL.getCurrencyByCode(baseCurr);
-            if (resultBase != null) {
+        CurrencyDTO resultBase = currencyServiceMySQL.getCurrencyByCode(baseCurr);
+        if (resultBase.id != 0) {
 
-                baseCurrencyJson.put("id",   resultBase.id);
-                baseCurrencyJson.put("name", resultBase.full_name);
-                baseCurrencyJson.put("code", resultBase.code);
-                baseCurrencyJson.put("sign", resultBase.sign);
+            baseCurrencyJson.put("id",   resultBase.id);
+            baseCurrencyJson.put("name", resultBase.full_name);
+            baseCurrencyJson.put("code", resultBase.code);
+            baseCurrencyJson.put("sign", resultBase.sign);
 
-                isBaseFound = true;
-            }
+            isBaseFound = true;
+        }
 
-            CurrencyDTO resultTarget = currencyServiceMySQL.getCurrencyByCode(targetCurr);
-            if (resultTarget != null) {
+        CurrencyDTO resultTarget = currencyServiceMySQL.getCurrencyByCode(targetCurr);
+        if (resultTarget.id != 0) {
 
-                targetCurrencyJson.put("id",   resultTarget.id);
-                targetCurrencyJson.put("name", resultTarget.full_name);
-                targetCurrencyJson.put("code", resultTarget.code);
-                targetCurrencyJson.put("sign", resultTarget.sign);
+            targetCurrencyJson.put("id",   resultTarget.id);
+            targetCurrencyJson.put("name", resultTarget.full_name);
+            targetCurrencyJson.put("code", resultTarget.code);
+            targetCurrencyJson.put("sign", resultTarget.sign);
 
-                istargetFound = true;
-            }
+            istargetFound = true;
+        }
 
 
-            if (!istargetFound || !isBaseFound) {
-                response.setStatus(Settings.HTTP_NO_DATA_FOUND);
-                retJson.put("message", Validate.ERROR_TEXT_NO_DATA_FOUND);
-            } else {
-                retJson.put("baseCurrency", baseCurrencyJson);
-                retJson.put("targetCurrency", targetCurrencyJson);
+        if (!istargetFound || !isBaseFound) {
+            response.setStatus(Settings.HTTP_NO_DATA_FOUND);
+            retJson.put("message", Validate.ERROR_TEXT_NO_DATA_FOUND);
+        } else {
+            retJson.put("baseCurrency", baseCurrencyJson);
+            retJson.put("targetCurrency", targetCurrencyJson);
 
-                getConvertedAmount(resultBase.code, resultTarget.code, amount, retJson);
+            Convert convert = new Convert();
+            convert.getConvertedAmount(resultBase.code, resultTarget.code, amount, retJson);
 
-                retJson.put("amount", amount);
+            retJson.put("amount", amount);
 
-            }
+        }
         PrintWriter out = response.getWriter();
         out.println(retJson);
-    }
-    private void getConvertedAmount(String base, String target, int amount, JSONObject json ) {
-        float convertedAmount = 0;
-        RateServeiceMySQL rateServiceMySQL = new RateServeiceMySQL();
-
-        RatesDTO resultRate = rateServiceMySQL.getRateByBaseAndTargetOnCode(base, target);
-
-
-        if (resultRate.id != 0 ) {
-            convertedAmount = amount * resultRate.rate;
-            json.put("rate", resultRate.rate);
-            json.put("convertedAmount", String.format("%.2f",convertedAmount));
-        } else {
-            RatesDTO resultRate2 = rateServiceMySQL.getRateByBaseAndTargetOnCode(target, base);
-            if ( resultRate2 != null) {
-                convertedAmount = amount / resultRate2.rate;
-                json.put("rate", 1 / resultRate2.rate);
-                json.put("convertedAmount", String.format("%.2f",convertedAmount));
-            }
-        }
+        out.close();
     }
 }
 
